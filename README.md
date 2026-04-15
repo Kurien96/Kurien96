@@ -1,9 +1,7 @@
-- 👋 Hi, I’m Kurien
-- 👀 I’m interested in AI and Machine Learning 
-- 🌱 I am currently learning Btech in Computer Science 
-- 📫 How to reach me 8078310911
+Kurien Kochukoshy is a motivated Computer Science student currently pursuing a Bachelor of Technology degree at APJ Abdul Kalam Technological University, with an expected graduation in 2027. He has a strong interest in Artificial Intelligence and Machine Learning, with hands-on experience gained through academic projects and internships.
 
-<!---
-Kurien96/Kurien96 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+During his tenure as an AI/ML Intern at ShadowFox, Australia, Kurien worked on developing practical machine learning solutions, including image classification systems and predictive models such as house price estimation. He has also built an intelligent autocorrect and next-word prediction system using Python, TensorFlow, and natural language processing techniques, along with a user-friendly interface.
+
+Kurien has experience in developing real-world applications, including a Flask-based image classification web app and is currently working on a smart waste sorting system that integrates deep learning with mobile application development using Flutter. His projects demonstrate strong skills in data preprocessing, model training, and system integration.
+
+With proficiency in Python, TensorFlow, and core computer science concepts, Kurien is passionate about leveraging AI to solve real-world problems, particularly in sustainability and automation. He is a proactive learner, continuously exploring new technologies and striving to build impactful and innovative solutions.

@@ -1,0 +1,311 @@
+/* ================== BASE ================== */
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(to bottom, #e8f5e9, #ffffff);
+    color: #2e7d32;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+p {
+    color: #558b2f;
+}
+
+/* ================== MODE BUTTONS ================== */
+.mode-select {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.mode-select button {
+    margin: 5px;
+    padding: 12px 22px;
+    background: #66bb6a;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.mode-select button:hover {
+    background: #2e7d32;
+    transform: translateY(-2px);
+}
+
+/* ================== BOXES ================== */
+.upload-box, .camera-box {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    margin-top: 20px;
+    text-align: center;
+    animation: fadeUp 0.6s ease-out;
+}
+
+.subtext {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+select {
+    padding: 10px;
+    width: 80%;
+    border-radius: 8px;
+    border: 1px solid #c8e6c9;
+    margin-top: 10px;
+}
+
+/* ================== CUSTOM UPLOAD ================== */
+.upload-box-ui {
+    margin: 20px auto;
+    width: 80%;
+    padding: 35px;
+    border: 2px dashed #81c784;
+    border-radius: 16px;
+    background: #f1f8e9;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.upload-box-ui:hover {
+    background: #e8f5e9;
+    border-color: #2e7d32;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.upload-icon {
+    font-size: 42px;
+}
+
+.upload-inner p {
+    margin: 10px 0 5px;
+}
+
+.upload-inner small {
+    color: #689f38;
+}
+
+/* ================== PREVIEW & MEDIA ================== */
+.preview-img,
+video,
+img {
+    margin-top: 15px;
+    width: 220px;
+    border-radius: 12px;
+    border: 3px solid #81c784;
+    animation: scaleIn 0.4s ease;
+}
+
+/* ================== BUTTONS ================== */
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background: #43a047;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: #2e7d32;
+    transform: translateY(-2px);
+}
+
+/* ================== RESULT CARD ================== */
+.result-card {
+    margin-top: 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    text-align: center;
+    animation: fadeUp 0.6s ease-out;
+}
+
+.hazard {
+    color: #c62828;
+    font-weight: bold;
+}
+
+/* ================== FOOTER ================== */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #558b2f;
+}
+
+/* ================== ANIMATIONS ================== */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ================== 🌊 WAVE BACKGROUND ================== */
+.wave-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100%;
+    animation: waveMove linear infinite;
+}
+
+.wave1 {
+    background: rgba(129, 199, 132, 0.4);
+    height: 80px;
+    animation-duration: 14s;
+}
+
+.wave2 {
+    background: rgba(76, 175, 80, 0.3);
+    height: 100px;
+    animation-duration: 20s;
+}
+
+@keyframes waveMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ================== 🍃 FLOATING LEAVES ================== */
+.leaves {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.leaf {
+    position: absolute;
+    font-size: 22px;
+    opacity: 0.6;
+    animation: floatLeaf linear infinite;
+}
+
+.leaf:nth-child(1) { left: 10%; animation-duration: 18s; }
+.leaf:nth-child(2) { left: 30%; animation-duration: 22s; }
+.leaf:nth-child(3) { left: 50%; animation-duration: 20s; }
+.leaf:nth-child(4) { left: 70%; animation-duration: 25s; }
+.leaf:nth-child(5) { left: 90%; animation-duration: 19s; }
+
+@keyframes floatLeaf {
+    0% { transform: translateY(-10%) rotate(0deg); }
+    100% { transform: translateY(110%) rotate(360deg); }
+}
+
+/* ================== 🎮 GAME ================== */
+.game-section {
+    margin-top: 50px;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.waste-items, .bins {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.waste-item {
+    background: #e8f5e9;
+    border: 2px dashed #66bb6a;
+    padding: 15px 20px;
+    margin: 10px;
+    border-radius: 12px;
+    cursor: grab;
+    font-weight: bold;
+}
+
+.waste-item:active {
+    transform: scale(0.95);
+}
+
+.bin {
+    background: #f1f8e9;
+    border: 2px solid #81c784;
+    padding: 20px;
+    margin: 10px;
+    width: 160px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.bin.dragover {
+    background: #c8e6c9;
+}
+
+.eco-score {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2e7d32;
+}
+
+/* 📍 Location Feature */
+.location-box {
+    margin-top: 40px;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+#locationResult {
+    margin-top: 15px;
+}

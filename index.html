@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>EcoSmart Waste Sorting</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<!-- 🌊 Wave Background -->
+<div class="wave-container">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+</div>
+
+<!-- 🍃 Floating Leaves -->
+<div class="leaves">
+    <span class="leaf">🍃</span>
+    <span class="leaf">🍃</span>
+    <span class="leaf">🍃</span>
+    <span class="leaf">🍃</span>
+    <span class="leaf">🍃</span>
+</div>
+
+<div class="container">
+
+<header>
+    <h1>🌱 EcoSmart Waste Sorting</h1>
+    <p>AI-powered waste classification for a cleaner planet</p>
+</header>
+
+<!-- MODE SELECTION -->
+<div class="mode-select">
+    <button onclick="showUpload()">📁 Upload Image</button>
+    <button onclick="showCamera()">📷 Use Camera</button>
+</div>
+
+<!-- UPLOAD MODE -->
+<div class="upload-box" id="uploadBox">
+    <h2>📁 Upload Waste Image</h2>
+    <p class="subtext">Help protect nature by uploading a clear image 🌍</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label>📍 Select City</label>
+        <select name="location">
+            <option value="default">General</option>
+            <option value="kerala">Kerala</option>
+            <option value="bangalore">Bangalore</option>
+            <option value="chennai">Chennai</option>
+        </select>
+
+        <input type="file" name="image" id="fileInput" accept="image/*"
+               hidden required onchange="previewImage(event)">
+
+        <div class="upload-box-ui"
+             onclick="document.getElementById('fileInput').click()">
+            <div class="upload-inner">
+                <span class="upload-icon">📸</span>
+                <p><strong>Click to upload waste image</strong></p>
+                <small>PNG / JPG supported</small>
+            </div>
+        </div>
+
+        <img id="preview" class="preview-img" style="display:none;">
+        <button type="submit">Analyze Image 🌱</button>
+    </form>
+</div>
+
+<!-- CAMERA MODE -->
+<div class="camera-box" id="cameraBox" style="display:none;">
+    <h2>📷 Real-Time Camera Recognition</h2>
+    <video id="video" autoplay></video><br><br>
+    <button onclick="capture()">Capture & Analyze</button>
+    <canvas id="canvas" width="224" height="224" hidden></canvas>
+    <div id="cameraResult"></div>
+</div>
+
+{% if data.waste %}
+<div class="result-card">
+    <img src="/{{ data.image }}">
+    <h2>{{ data.waste | upper }}</h2>
+    <p><strong>Confidence:</strong> {{ data.confidence }}%</p>
+
+    {% if data.hazard %}
+        <p class="hazard">☢️ Hazardous Waste</p>
+    {% endif %}
+
+    <p><strong>Disposal:</strong> {{ data.guide }}</p>
+    <p><strong>Eco Impact:</strong> {{ data.eco }}</p>
+    <p><strong>Location Rule:</strong> {{ data.location }}</p>
+</div>
+{% endif %}
+
+<!-- 📍 LOCATION FEATURE -->
+<div class="location-box">
+    <h2>📍 Find Nearest Waste Center</h2>
+    <p>Use your real-time location to find the closest disposal facility</p>
+    <button onclick="findNearest()">Find Nearby Center</button>
+    <div id="locationResult"></div>
+</div>
+
+<!-- 🎮 GAME -->
+<div class="game-section">
+    <h2>🎮 Waste Sorting Game</h2>
+    <p>Drag the waste item into the correct bin ♻️</p>
+
+    <div class="waste-items">
+        <div class="waste-item" draggable="true" data-type="plastic">🧴 Plastic Bottle</div>
+        <div class="waste-item" draggable="true" data-type="biological">🍌 Banana Peel</div>
+        <div class="waste-item" draggable="true" data-type="battery">🔋 Battery</div>
+        <div class="waste-item" draggable="true" data-type="paper">📄 Paper</div>
+    </div>
+
+    <div class="bins">
+        <div class="bin" data-accept="plastic">♻️ Plastic Bin</div>
+        <div class="bin" data-accept="biological">🌱 Organic Bin</div>
+        <div class="bin" data-accept="battery">☢️ E-Waste Bin</div>
+        <div class="bin" data-accept="paper">📦 Paper Bin</div>
+    </div>
+
+    <p id="gameMessage"></p>
+    <p class="eco-score">🌿 Game Eco Score: <span id="gameScore">0</span></p>
+</div>
+
+<footer>
+    <p>♻️ Small actions today. A greener tomorrow.</p>
+</footer>
+
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+let video = document.getElementById("video");
+let started = false;
+
+function showUpload() {
+    uploadBox.style.display = "block";
+    cameraBox.style.display = "none";
+}
+
+function showCamera() {
+    uploadBox.style.display = "none";
+    cameraBox.style.display = "block";
+
+    if (!started) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                started = true;
+            })
+            .catch(() => alert("Camera access denied"));
+    }
+}
+
+function previewImage(e) {
+    const p = document.getElementById("preview");
+    p.src = URL.createObjectURL(e.target.files[0]);
+    p.style.display = "block";
+}
+
+function capture() {
+    const c = document.getElementById("canvas");
+    const ctx = c.getContext("2d");
+    ctx.drawImage(video, 0, 0, 224, 224);
+
+    fetch("/camera", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({image: c.toDataURL("image/png")})
+    })
+    .then(r=>r.json())
+    .then(d=>{
+        cameraResult.innerHTML = `
+        <div class="result-card">
+            <h3>${d.waste.toUpperCase()}</h3>
+            <p>Confidence: ${d.confidence}%</p>
+            ${d.hazard ? "<p class='hazard'>☢️ Hazardous Waste</p>" : ""}
+            <p>${d.disposal}</p>
+        </div>`;
+    });
+}
+
+function findNearest() {
+    navigator.geolocation.getCurrentPosition(pos=>{
+        fetch("/nearest-center",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                lat:pos.coords.latitude,
+                lon:pos.coords.longitude
+            })
+        })
+        .then(r=>r.json())
+        .then(d=>{
+            locationResult.innerHTML=`
+            <div class="result-card">
+                <h3>🏁 Nearest Waste Center</h3>
+                <p><strong>${d.name}</strong></p>
+                <p>Distance: ${d.distance} km</p>
+                <p>Accepts: ${d.type}</p>
+            </div>`;
+        });
+    },()=>alert("Location permission denied"));
+}
+
+document.addEventListener("DOMContentLoaded",()=>document.body.style.opacity=1);
+</script>
+
+<script>
+let draggedItem=null, score=0;
+document.querySelectorAll(".waste-item").forEach(i=>{
+    i.addEventListener("dragstart",()=>draggedItem=i);
+});
+document.querySelectorAll(".bin").forEach(b=>{
+    b.addEventListener("dragover",e=>e.preventDefault());
+    b.addEventListener("drop",()=>{
+        if(draggedItem && draggedItem.dataset.type===b.dataset.accept){
+            score+=10; gameScore.innerText=score;
+            draggedItem.remove();
+            gameMessage.innerText="✅ Correct!";
+        } else gameMessage.innerText="❌ Wrong bin!";
+        draggedItem=null;
+    });
+});
+</script>
+
+</body>
+</html>
